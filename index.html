@@ -1,0 +1,758 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes">
+    <title>诗佛·王维 | 行旅足迹 · 诗路地图</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
+    <link href="https://fonts.googleapis.com/css2?family=Noto+Serif+SC:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+        body {
+            font-family: 'Noto Serif SC', '宋体', 'Times New Roman', serif;
+            background-color: #fef9ef;
+            color: #2e241f;
+            scroll-behavior: smooth;
+            line-height: 1.5;
+        }
+        ::-webkit-scrollbar {
+            width: 6px;
+        }
+        ::-webkit-scrollbar-track {
+            background: #e6dacd;
+        }
+        ::-webkit-scrollbar-thumb {
+            background: #8f7a63;
+            border-radius: 4px;
+        }
+        .container {
+            max-width: 1280px;
+            margin: 0 auto;
+            padding: 0 2rem;
+        }
+        .navbar {
+            position: sticky;
+            top: 0;
+            background: rgba(254, 249, 239, 0.92);
+            backdrop-filter: blur(10px);
+            z-index: 100;
+            border-bottom: 1px solid #e2d5c2;
+            padding: 0.8rem 0;
+        }
+        .nav-container {
+            max-width: 1280px;
+            margin: 0 auto;
+            padding: 0 2rem;
+            display: flex;
+            justify-content: space-between;
+            align-items: baseline;
+            flex-wrap: wrap;
+        }
+        .logo {
+            font-size: 1.6rem;
+            font-weight: 500;
+            letter-spacing: 2px;
+            color: #4a5b4b;
+        }
+        .logo span {
+            font-size: 0.9rem;
+            font-weight: 300;
+            color: #8f7a63;
+            margin-left: 8px;
+        }
+        .nav-links {
+            display: flex;
+            gap: 2rem;
+            list-style: none;
+        }
+        .nav-links a {
+            text-decoration: none;
+            color: #4a3b2c;
+            font-weight: 500;
+            transition: 0.3s;
+            font-size: 1rem;
+        }
+        .nav-links a:hover {
+            color: #6d8f6a;
+            border-bottom: 2px solid #9bbf8f;
+        }
+        .hero {
+            min-height: 85vh;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            text-align: center;
+            background: linear-gradient(rgba(245, 240, 228, 0.5), rgba(235, 225, 210, 0.6)), url("bt.jpg") center/cover no-repeat;
+            background-blend-mode: overlay;
+        }
+        .hero-content h1 {
+            font-size: 3.2rem;
+            font-weight: 400;
+            letter-spacing: 6px;
+            color: #2c3e2b;
+            margin-bottom: 1rem;
+            text-shadow: 2px 2px 8px rgba(0,0,0,0.05);
+        }
+        .hero-content .poem-line {
+            font-size: 1.4rem;
+            font-style: italic;
+            color: #5d6e53;
+            border-top: 1px solid #cfc2ae;
+            border-bottom: 1px solid #cfc2ae;
+            display: inline-block;
+            padding: 0.6rem 1.5rem;
+            margin-top: 1rem;
+            background: rgba(255,250,235,0.4);
+        }
+        .scroll-down {
+            margin-top: 3rem;
+            font-size: 1.2rem;
+            color: #7d6b56;
+            animation: bounce 2s infinite;
+            cursor: pointer;
+        }
+        @keyframes bounce {
+            0%,100%{ transform: translateY(0);}
+            50%{ transform: translateY(8px);}
+        }
+        section {
+            padding: 5rem 0;
+            border-bottom: 1px solid #e8dfd1;
+        }
+        .section-title {
+            text-align: center;
+            font-size: 2.2rem;
+            font-weight: 400;
+            letter-spacing: 4px;
+
+            margin-bottom: 3rem;
+            position: relative;
+            display: inline-block;
+            left: 50%;
+            transform: translateX(-50%);
+            white-space: nowrap;
+        }
+        .section-title:after {
+            content: '';
+            position: absolute;
+            bottom: -12px;
+            left: 20%;
+            width: 60%;
+            height: 1px;
+            background: #b3a07e;
+        }
+        .timeline {
+            display: flex;
+            flex-direction: column;
+            gap: 2rem;
+            max-width: 800px;
+            margin: 0 auto;
+        }
+        .timeline-item {
+            display: flex;
+            gap: 1.5rem;
+            background: #fffbf3;
+            padding: 1.2rem 1.8rem;
+            border-radius: 24px;
+            box-shadow: 0 4px 12px rgba(0,0,0,0.02);
+            border-left: 4px solid #9bbf8f;
+        }
+        .timeline-year {
+            font-weight: 700;
+            font-size: 1.4rem;
+            color: #6d8f6a;
+            min-width: 100px;
+        }
+        .poetry-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
+            gap: 2rem;
+            margin-top: 1rem;
+        }
+        .poem-card {
+            background: #fffbf3;
+            padding: 1.8rem 1.2rem;
+            border-radius: 28px;
+            transition: 0.2s ease;
+            cursor: pointer;
+            box-shadow: 0 6px 14px rgba(0,0,0,0.03);
+            border: 1px solid #f0e6d8;
+            text-align: center;
+        }
+        .poem-card:hover {
+            transform: translateY(-5px);
+            border-color: #c7d5bc;
+        }
+        .poem-title {
+            font-size: 1.4rem;
+            font-weight: 500;
+            color: #4a5b4b;
+            margin-bottom: 0.75rem;
+        }
+        .poem-excerpt {
+            font-size: 0.9rem;
+            color: #7a6854;
+            font-style: italic;
+            border-top: 1px dashed #e2d5c2;
+            padding-top: 0.8rem;
+            margin-top: 0.5rem;
+        }
+        /* 足迹地图 - 连线版 */
+        .map-journey {
+            background: #e2d5c0;
+            border-radius: 48px;
+            padding: 1.5rem;
+            box-shadow: inset 0 0 0 1px #f3ecdf, 0 12px 24px rgba(0,0,0,0.1);
+        }
+        .map-canvas-container {
+            position: relative;
+            width: 100%;
+            background: #dbceb5;
+            border-radius: 32px;
+            overflow: hidden;
+            box-shadow: 0 4px 12px rgba(0,0,0,0.1);
+        }
+        canvas {
+            display: block;
+            width: 100%;
+            height: auto;
+            background: #f3ecd9;
+            cursor: pointer;
+        }
+        .map-legend {
+            text-align: center;
+            margin-top: 1.2rem;
+            font-size: 0.85rem;
+            color: #5f4c38;
+            display: flex;
+            justify-content: center;
+            gap: 1.5rem;
+            flex-wrap: wrap;
+        }
+        .legend-dot {
+            display: inline-block;
+            width: 12px;
+            height: 12px;
+            background: #b35f2e;
+            border-radius: 50%;
+            box-shadow: 0 0 0 2px #fdebd0;
+            margin-right: 6px;
+        }
+        /* 辋川景点 */
+        .spots {
+            display: flex;
+            flex-wrap: wrap;
+            justify-content: center;
+            gap: 2rem;
+            margin: 2rem 0;
+        }
+        .spot {
+            background: #fffaf0;
+            padding: 0.8rem 1.6rem;
+            border-radius: 60px;
+            font-weight: 500;
+            color: #5b6e47;
+            cursor: pointer;
+            transition: 0.2s;
+            border: 1px solid #dacfbc;
+        }
+        .spot:hover {
+            background: #dde8d4;
+        }
+        .zen-card {
+            background: #fffbf3;
+            max-width: 600px;
+            margin: 2rem auto;
+            padding: 2rem;
+            text-align: center;
+            border-radius: 48px;
+            box-shadow: 0 20px 35px -15px rgba(0,0,0,0.05);
+            border: 1px solid #e4d7c5;
+        }
+        .today-zen {
+            font-size: 1.4rem;
+            font-weight: 400;
+            color: #2e5a2c;
+            margin: 1rem 0;
+        }
+        .btn-zen {
+            background: none;
+            border: 1px solid #b7aa90;
+            padding: 0.6rem 1.8rem;
+            border-radius: 40px;
+            font-family: inherit;
+            font-size: 0.9rem;
+            color: #5f6a48;
+            cursor: pointer;
+            margin-top: 1rem;
+        }
+        .modal {
+            display: none;
+            position: fixed;
+            top: 0; left: 0;
+            width: 100%; height: 100%;
+            background-color: rgba(0,0,0,0.6);
+            backdrop-filter: blur(4px);
+            justify-content: center;
+            align-items: center;
+            z-index: 1000;
+        }
+        .modal-content {
+            background: #fffef7;
+            max-width: 600px;
+            width: 90%;
+            padding: 2rem;
+            border-radius: 32px;
+            position: relative;
+            border: 1px solid #ded1bc;
+            max-height: 80vh;
+            overflow-y: auto;
+        }
+        .modal-close {
+            position: absolute;
+            top: 16px;
+            right: 22px;
+            font-size: 1.8rem;
+            cursor: pointer;
+            color: #8f7a63;
+        }
+        .modal-body h3 {
+            font-size: 1.8rem;
+            margin-bottom: 0.5rem;
+            color: #4f694a;
+        }
+        .poem-item {
+            margin-bottom: 1.5rem;
+            border-bottom: 1px dashed #e2d5c2;
+            padding-bottom: 1rem;
+        }
+        .poem-item strong {
+            font-size: 1.1rem;
+            color: #6f4f2e;
+        }
+        .poem-text {
+            white-space: pre-line;
+            font-size: 0.9rem;
+            margin: 0.5rem 0;
+            background: #faf5ea;
+            padding: 0.8rem;
+            border-radius: 20px;
+        }
+        .appreciation {
+            color: #5e5546;
+            font-size: 0.85rem;
+        }
+        footer {
+            text-align: center;
+            padding: 2rem;
+            font-size: 0.8rem;
+            color: #9e8f7a;
+            background: #f4ede2;
+        }
+        /* 新增：智能体容器样式，避免遮挡页面 */
+        #coze-chat-container {
+            position: fixed;
+            bottom: 20px;
+            right: 20px;
+            width: 380px;
+            height: 600px;
+            z-index: 999;
+            border-radius: 12px;
+            box-shadow: 0 4px 20px rgba(0,0,0,0.15);
+        }
+        @media (max-width: 768px) {
+            .section-title {
+                font-size: 1.8rem;
+                white-space: normal;
+            }
+            .timeline-item {
+                flex-direction: column;
+            }
+            #coze-chat-container {
+                width: 90%;
+                height: 500px;
+                bottom: 10px;
+                right: 5%;
+            }
+        }
+    </style>
+</head>
+<body>
+
+<nav class="navbar">
+    <div class="nav-container">
+        <div class="logo">王维 <span>· 摩诘</span></div>
+        <ul class="nav-links">
+            <li><a href="#home">首页</a></li>
+            <li><a href="#life">生平</a></li>
+            <li><a href="#poetry">诗画集</a></li>
+            <li><a href="#journey">行旅足迹</a></li>
+            <li><a href="#wangchuan">辋川别业</a></li>
+            <li><a href="#zen">禅意空间</a></li>
+        </ul>
+    </div>
+</nav>
+
+<section id="home" class="hero">
+    <div class="hero-content">
+        <h1>诗中有画 · 画中有诗</h1>
+        <div class="poem-line">行到水穷处，坐看云起时</div>
+        <div class="scroll-down"><i class="fas fa-chevron-down"></i> 空山新雨</div>
+    </div>
+</section>
+
+<main>
+    <section id="life">
+        <div class="container">
+            <h2 class="section-title">· 一生辗转 归心辋川 ·</h2>
+            <div class="timeline">
+                <div class="timeline-item"><div class="timeline-year">701年</div><div>生于河东蒲州（今山西永济），自幼聪颖，工诗书画，少年成名。</div></div>
+                <div class="timeline-item"><div class="timeline-year">721年</div><div>进士及第，任太乐丞，后贬济州司仓参军，初尝宦海沉浮。</div></div>
+                <div class="timeline-item"><div class="timeline-year">735年</div><div>任右拾遗，后转监察御史，奉使出塞宣慰，赴凉州，写就壮丽边塞诗。</div></div>
+                <div class="timeline-item"><div class="timeline-year">744年</div><div>于蓝田辋川购得别业，半官半隐，与裴迪等悠游山水，成《辋川集》。</div></div>
+                <div class="timeline-item"><div class="timeline-year">756年</div><div>安史之乱被俘，被迫受伪职，乱平后因弟王缙削官相救得宽宥，官至尚书右丞。</div></div>
+                <div class="timeline-item"><div class="timeline-year">761年</div><div>安然辞世，葬于辋川。后世尊为“诗佛”“南宗画祖”。</div></div>
+            </div>
+        </div>
+    </section>
+
+    <section id="poetry">
+        <div class="container">
+            <h2 class="section-title">· 诗画相生 摩诘集 ·</h2>
+            <div class="poetry-grid" id="poetryGrid"></div>
+            <div style="text-align: center; margin-top: 2rem;"><i class="fas fa-hand-pointer"></i> 点击卡片，阅览全诗及赏析</div>
+        </div>
+    </section>
+
+    <!-- 新版足迹地图：仅用线段连接王维去过的重要地点 -->
+    <section id="journey">
+        <div class="container">
+            <h2 class="section-title">· 云游足迹 · 王维行旅图</h2>
+            <div class="map-journey">
+                <div class="map-canvas-container">
+                    <canvas id="travelMapCanvas" width="1000" height="500" style="width:100%; height:auto; max-width:1000px; margin:0 auto; display:block;"></canvas>
+                </div>
+                <div class="map-legend">
+                    <span><i class="fas fa-map-marker-alt" style="color:#b35f2e;"></i> 点击地标，品读行旅诗篇</span>
+                    <span><i class="fas fa-route"></i> 足迹连线的诗路</span>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <section id="wangchuan">
+        <div class="container">
+            <h2 class="section-title">· 辋川别业 二十景 ·</h2>
+            <div style="background:#efe6d9; border-radius:48px; padding:2rem 1rem;">
+                <div class="spots" id="wangchuanSpots"></div>
+                <div class="map-note" style="text-align:center; margin-top:1rem;"><i class="fas fa-map-marker-alt"></i> 点击亭阁，吟诵王维诗意</div>
+            </div>
+        </div>
+    </section>
+
+    <section id="zen">
+        <div class="container">
+            <h2 class="section-title">· 禅意 · 静观 ·</h2>
+            <div class="zen-card">
+                <i class="fas fa-leaf" style="font-size: 2rem; color: #8dae77;"></i>
+                <div class="today-zen" id="dailyZen">“人闲桂花落，夜静春山空。”</div>
+                <button class="btn-zen" id="refreshZen"><i class="fas fa-sync-alt"></i> 今日禅诗</button>
+            </div>
+        </div>
+    </section>
+</main>
+
+<footer>
+    <p>诗中有画，画中有诗 | 数字辋川 · 行旅足迹地图（足迹连线）</p>
+</footer>
+
+<div id="poemModal" class="modal">
+    <div class="modal-content">
+        <span class="modal-close">&times;</span>
+        <div class="modal-body" id="modalBody">
+            <h3 id="modalTitle"></h3>
+            <div id="modalPoemsList" class="poem-list"></div>
+        </div>
+    </div>
+</div>
+
+<script>
+    // ---------- 诗歌库（20+首）----------
+    const poemsData = [
+        { title: "山居秋暝", excerpt: "空山新雨后，天气晚来秋。", full: "空山新雨后，天气晚来秋。\n明月松间照，清泉石上流。\n竹喧归浣女，莲动下渔舟。\n随意春芳歇，王孙自可留。", appreciation: "描绘秋雨初晴后傍晚山村的旖旎风光，寄托隐逸之乐。" },
+        { title: "鹿柴", excerpt: "空山不见人，但闻人语响。", full: "空山不见人，但闻人语响。\n返景入深林，复照青苔上。", appreciation: "以声响衬托空寂，辋川集代表作。" },
+        { title: "竹里馆", excerpt: "独坐幽篁里，弹琴复长啸。", full: "独坐幽篁里，弹琴复长啸。\n深林人不知，明月来相照。", appreciation: "月下独坐，弹琴长啸，与天地精神往来。" },
+        { title: "辛夷坞", excerpt: "木末芙蓉花，山中发红萼。", full: "木末芙蓉花，山中发红萼。\n涧户寂无人，纷纷开且落。", appreciation: "花开花落无人知，禅宗寂灭观。" },
+        { title: "鸟鸣涧", excerpt: "人闲桂花落，夜静春山空。", full: "人闲桂花落，夜静春山空。\n月出惊山鸟，时鸣春涧中。", appreciation: "以动写静，春山空灵。" },
+        { title: "使至塞上", excerpt: "大漠孤烟直，长河落日圆。", full: "单车欲问边，属国过居延。\n征蓬出汉塞，归雁入胡天。\n大漠孤烟直，长河落日圆。\n萧关逢候骑，都护在燕然。", appreciation: "千古壮观名句，塞外风光的苍劲。" },
+        { title: "九月九日忆山东兄弟", excerpt: "独在异乡为异客，每逢佳节倍思亲。", full: "独在异乡为异客，每逢佳节倍思亲。\n遥知兄弟登高处，遍插茱萸少一人。", appreciation: "朴素深沉的思乡之作。" },
+        { title: "送元二使安西", excerpt: "渭城朝雨浥轻尘，客舍青青柳色新。", full: "渭城朝雨浥轻尘，客舍青青柳色新。\n劝君更尽一杯酒，西出阳关无故人。", appreciation: "阳关三叠，深情告别。" },
+        { title: "观猎", excerpt: "风劲角弓鸣，将军猎渭城。", full: "风劲角弓鸣，将军猎渭城。\n草枯鹰眼疾，雪尽马蹄轻。\n忽过新丰市，还归细柳营。\n回看射雕处，千里暮云平。", appreciation: "气概豪迈，笔力雄健。" },
+        { title: "汉江临眺", excerpt: "江流天地外，山色有无中。", full: "楚塞三湘接，荆门九派通。\n江流天地外，山色有无中。\n郡邑浮前浦，波澜动远空。\n襄阳好风日，留醉与山翁。", appreciation: "气象阔大，水墨画般的景色。" },
+        { title: "终南山", excerpt: "太乙近天都，连山接海隅。", full: "太乙近天都，连山接海隅。\n白云回望合，青霭入看无。\n分野中峰变，阴晴众壑殊。\n欲投人处宿，隔水问樵夫。", appreciation: "写终南山之壮阔，意境高远。" },
+        { title: "过香积寺", excerpt: "不知香积寺，数里入云峰。", full: "不知香积寺，数里入云峰。\n古木无人径，深山何处钟。\n泉声咽危石，日色冷青松。\n薄暮空潭曲，安禅制毒龙。", appreciation: "幽深禅意，远离尘嚣。" },
+        { title: "山中", excerpt: "荆溪白石出，天寒红叶稀。", full: "荆溪白石出，天寒红叶稀。\n山路元无雨，空翠湿人衣。", appreciation: "寥寥数笔，勾勒冬日山色。" },
+        { title: "杂诗", excerpt: "君自故乡来，应知故乡事。", full: "君自故乡来，应知故乡事。\n来日绮窗前，寒梅著花未？", appreciation: "思乡之情，托于寒梅。" }
+    ];
+
+    // 行旅地点（按时间顺序：太原→长安→济州→凉州→襄阳→辋川）坐标基于canvas 1000x500
+    const journeySpots = [
+        { name: "太原 (河东)", x: 280, y: 200, poems: [{ title: "《九月九日忆山东兄弟》", content: "独在异乡为异客，每逢佳节倍思亲。\n遥知兄弟登高处，遍插茱萸少一人。", appreciation: "少年离乡，重阳思亲之作。" }] },
+        { name: "长安 (西安)", x: 460, y: 280, poems: [{ title: "《少年行四首·其一》", content: "新丰美酒斗十千，咸阳游侠多少年。\n相逢意气为君饮，系马高楼垂柳边。", appreciation: "长安游侠风采，少年意气。" }] },
+        { name: "济州", x: 620, y: 310, poems: [{ title: "《济上四贤咏》", content: "解印归田里，贤哉此丈夫。\n少年曾任侠，晚节更为儒。", appreciation: "贬谪济州时所作，仰慕高士。" }] },
+        { name: "凉州 (武威)", x: 240, y: 210, poems: [{ title: "《使至塞上》", content: "单车欲问边，属国过居延。\n征蓬出汉塞，归雁入胡天。\n大漠孤烟直，长河落日圆。\n萧关逢候骑，都护在燕然。", appreciation: "奉使宣慰，边塞壮丽。" }, { title: "《陇西行》", content: "十里一走马，五里一扬鞭。\n都护军书至，匈奴围酒泉。\n关山正飞雪，烽火断无烟。", appreciation: "边关急报，紧张肃杀。" }] },
+        { name: "襄阳", x: 680, y: 380, poems: [{ title: "《汉江临眺》", content: "楚塞三湘接，荆门九派通。\n江流天地外，山色有无中。\n郡邑浮前浦，波澜动远空。\n襄阳好风日，留醉与山翁。", appreciation: "泛舟汉江，壮阔如画。" }] },
+        { name: "辋川 (蓝田)", x: 520, y: 310, poems: [
+            { title: "《鹿柴》", content: "空山不见人，但闻人语响。\n返景入深林，复照青苔上。", appreciation: "辋川胜景，空寂禅意。" },
+            { title: "《竹里馆》", content: "独坐幽篁里，弹琴复长啸。\n深林人不知，明月来相照。", appreciation: "幽篁独坐，明月相伴。" },
+            { title: "《辛夷坞》", content: "木末芙蓉花，山中发红萼。\n涧户寂无人，纷纷开且落。", appreciation: "花开花落，禅机自然。" },
+            { title: "《鸟鸣涧》", content: "人闲桂花落，夜静春山空。\n月出惊山鸟，时鸣春涧中。", appreciation: "春山月夜，动静相宜。" }
+        ] }
+    ];
+
+    // 辋川景点
+    const wangchuanSpotsData = [
+        { name: "鹿柴", poem: "空山不见人，但闻人语响。返景入深林，复照青苔上。", appreciation: "以声衬寂，光影流动。" },
+        { name: "竹里馆", poem: "独坐幽篁里，弹琴复长啸。深林人不知，明月来相照。", appreciation: "幽篁深处，琴啸自娱。" },
+        { name: "辛夷坞", poem: "木末芙蓉花，山中发红萼。涧户寂无人，纷纷开且落。", appreciation: "木兰花自开自落。" },
+        { name: "白石滩", poem: "清浅白石滩，绿蒲向堪把。家住水东西，浣纱明月下。", appreciation: "月色滩头，浣纱少女。" },
+        { name: "孟城坳", poem: "新家孟城口，古木余衰柳。来者复为谁，空悲昔人有。", appreciation: "感叹人世代谢。" },
+        { name: "华子冈", poem: "飞鸟去不穷，连山复秋色。上下华子冈，惆怅情何极。", appreciation: "秋色连绵，寄寓怅惘。" }
+    ];
+
+    const zenQuotes = ["行到水穷处，坐看云起时。", "明月松间照，清泉石上流。", "人闲桂花落，夜静春山空。", "涧户寂无人，纷纷开且落。", "山中一夜雨，树杪百重泉。", "薄暮空潭曲，安禅制毒龙。"];
+
+    // ----- 绘制地图：连线 + 地标 -----
+    const canvas = document.getElementById('travelMapCanvas');
+    const ctx = canvas.getContext('2d');
+
+    function drawMapWithLines() {
+        const w = canvas.width = 1000;
+        const h = canvas.height = 500;
+        
+        // 背景色（宣纸感）
+        ctx.fillStyle = '#f3ecd9';
+        ctx.fillRect(0, 0, w, h);
+        
+        // 绘制简单山水示意（极淡）
+        ctx.save();
+        ctx.globalAlpha = 0.3;
+        ctx.beginPath();
+        ctx.moveTo(0, 350);
+        ctx.lineTo(200, 320);
+        ctx.lineTo(400, 280);
+        ctx.lineTo(600, 300);
+        ctx.lineTo(800, 260);
+        ctx.lineTo(1000, 290);
+        ctx.lineTo(1000, 500);
+        ctx.lineTo(0, 500);
+        ctx.fillStyle = '#c2b28f';
+        ctx.fill();
+        
+        ctx.beginPath();
+        ctx.moveTo(0, 200);
+
+        ctx.lineTo(150, 170);
+        ctx.lineTo(300, 190);
+        ctx.lineTo(450, 160);
+        ctx.lineTo(600, 180);
+        ctx.lineTo(800, 150);
+        ctx.lineTo(1000, 170);
+        ctx.fillStyle = '#b8aa88';
+        ctx.fill();
+        ctx.globalAlpha = 1;
+        
+        // 画河流/黄河示意
+        ctx.beginPath();
+        ctx.moveTo(80, 270);
+        ctx.quadraticCurveTo(300, 240, 500, 260);
+        ctx.quadraticCurveTo(700, 280, 920, 300);
+        ctx.lineWidth = 3;
+        ctx.strokeStyle = '#9eb0a0';
+        ctx.stroke();
+        
+        // 核心：按照顺序将足迹点连线
+        const connectOrder = [
+            journeySpots[0], // 太原
+            journeySpots[1], // 长安
+            journeySpots[3], // 凉州
+            journeySpots[2], // 济州
+            journeySpots[4], // 襄阳
+            journeySpots[5]  // 辋川
+        ];
+        
+        ctx.beginPath();
+        ctx.moveTo(connectOrder[0].x, connectOrder[0].y);
+        for (let i = 1; i < connectOrder.length; i++) {
+            ctx.lineTo(connectOrder[i].x, connectOrder[i].y);
+        }
+        ctx.strokeStyle = '#b5651e';
+        ctx.lineWidth = 3;
+        ctx.setLineDash([8, 6]);
+        ctx.stroke();
+        ctx.setLineDash([]); 
+        
+        // 绘制虚线轨迹点小圆点
+        for (let i = 0; i < connectOrder.length; i++) {
+            ctx.beginPath();
+            ctx.arc(connectOrder[i].x, connectOrder[i].y, 6, 0, 2 * Math.PI);
+            ctx.fillStyle = '#d98c2b';
+            ctx.shadowBlur = 4;
+            ctx.fill();
+            ctx.fillStyle = '#fff3e0';
+            ctx.beginPath();
+            ctx.arc(connectOrder[i].x, connectOrder[i].y, 3, 0, 2 * Math.PI);
+            ctx.fill();
+        }
+        journeySpots.forEach(spot => {
+            ctx.beginPath();
+            ctx.arc(spot.x, spot.y, 9, 0, 2 * Math.PI);
+            ctx.fillStyle = "#d98c2b";
+            ctx.fill();
+            ctx.fillStyle = "#fff0cf";
+            ctx.beginPath();
+            ctx.arc(spot.x, spot.y, 4, 0, 2 * Math.PI);
+            ctx.fill();
+        });
+        ctx.shadowBlur = 0;
+        
+        // 地名标注
+        ctx.font = "13px 'Noto Serif SC'";
+        ctx.fillStyle = "#4d3e2e";
+        journeySpots.forEach(spot => {
+            ctx.fillText(spot.name.split(' ')[0], spot.x - 18, spot.y - 12);
+        });
+    }
+
+    // 存储点击区域
+    let clickRegions = [];
+    function setupClickRegions() {
+        clickRegions = journeySpots.map(spot => ({ x: spot.x, y: spot.y, radius: 15, data: spot }));
+    }
+
+    function handleCanvasClick(e) {
+        const rect = canvas.getBoundingClientRect();
+        const scaleX = canvas.width / rect.width;
+        const scaleY = canvas.height / rect.height;
+        const mouseX = (e.clientX - rect.left) * scaleX;
+        const mouseY = (e.clientY - rect.top) * scaleY;
+        for (let region of clickRegions) {
+            const dx = mouseX - region.x;
+            const dy = mouseY - region.y;
+            if (Math.hypot(dx, dy) < region.radius) {
+                const spot = region.data;
+                openPoemModal(`${spot.name} · 行旅诗作`, spot.poems);
+                break;
+            }
+        }
+    }
+
+    // 通用模态框
+    function openPoemModal(title, poemsArray) {
+        const modalTitle = document.getElementById('modalTitle');
+        const modalPoemsList = document.getElementById('modalPoemsList');
+        modalTitle.innerText = title;
+        modalPoemsList.innerHTML = '';
+        poemsArray.forEach(p => {
+            const div = document.createElement('div');
+            div.className = 'poem-item';
+            div.innerHTML = `<strong>${p.title}</strong><div class="poem-text">${(p.content || p.full || '').replace(/\n/g, '<br>')}</div><div class="appreciation">${p.appreciation}</div>`;
+            modalPoemsList.appendChild(div);
+        });
+        document.getElementById('poemModal').style.display = 'flex';
+    }
+
+    // 诗歌网格
+    const poetryGrid = document.getElementById('poetryGrid');
+    function buildPoetryCards() {
+        poetryGrid.innerHTML = '';
+        poemsData.forEach(poem => {
+            const card = document.createElement('div');
+            card.className = 'poem-card';
+            card.innerHTML = `<div class="poem-title">${poem.title}</div><div class="poem-excerpt">“${poem.excerpt}”</div><i class="fas fa-feather-alt"></i>`;
+            card.addEventListener('click', () => openPoemModal(poem.title, [{ title: poem.title, content: poem.full, appreciation: poem.appreciation }]));
+            poetryGrid.appendChild(card);
+        });
+    }
+
+    function buildWangchuanSpots() {
+        const container = document.getElementById('wangchuanSpots');
+        container.innerHTML = '';
+        wangchuanSpotsData.forEach(spot => {
+            const btn = document.createElement('div');
+            btn.className = 'spot';
+            btn.innerText = spot.name;
+            btn.addEventListener('click', () => openPoemModal(`${spot.name} · 辋川`, [{ title: spot.name, content: spot.poem, appreciation: spot.appreciation }]));
+            container.appendChild(btn);
+        });
+    }
+
+    // 禅意随机
+    const dailyZen = document.getElementById('dailyZen');
+    function refreshZen() { dailyZen.innerText = `“${zenQuotes[Math.floor(Math.random() * zenQuotes.length)]}”`; }
+    document.getElementById('refreshZen').addEventListener('click', refreshZen);
+    dailyZen.innerText = `“${zenQuotes[0]}”`;
+
+    // 模态框关闭
+    const modal = document.getElementById('poemModal');
+    document.querySelector('.modal-close').addEventListener('click', () => modal.style.display = 'none');
+    window.addEventListener('click', (e) => { if (e.target === modal) modal.style.display = 'none'; });
+
+    // 平滑导航
+    document.querySelectorAll('.nav-links a').forEach(anchor => {
+        anchor.addEventListener('click', function(e) {
+            e.preventDefault();
+            const targetId = this.getAttribute('href').substring(1);
+            const target = document.getElementById(targetId);
+            if(target) target.scrollIntoView({ behavior: 'smooth' });
+        });
+    });
+    document.querySelector('.scroll-down')?.addEventListener('click', () => document.getElementById('life').scrollIntoView({ behavior: 'smooth' }));
+
+    // 初始化地图与事件
+    drawMapWithLines();
+    setupClickRegions();
+    canvas.addEventListener('click', handleCanvasClick);
+    buildPoetryCards();
+    buildWangchuanSpots();
+</script>
+
+<!-- Coze智能体核心代码（仅保留1处，配置正确的会话隔离） -->
+<script src="https://lf-cdn.coze.cn/obj/unpkg/flow-platform/chat-app-sdk/1.2.0-beta.19/libs/cn/index.js"></script>
+<script>
+  // 1. 生成唯一用户ID（会话隔离核心）
+  function getUniqueUserId() {
+    const STORAGE_KEY = 'coze_wangwei_user_id';
+    let userId = localStorage.getItem(STORAGE_KEY);
+    // 新用户生成随机唯一ID，老用户用本地存储的ID
+    if (!userId) {
+      userId = 'user_' + Date.now() + '_' + Math.random().toString(36).slice(2, 10);
+      localStorage.setItem(STORAGE_KEY, userId);
+    }
+    return userId;
+  }
+
+  // 2. 初始化智能体（仅1次，配置正确的user_id）
+  new CozeWebSDK.WebChatClient({
+    config: {
+      bot_id: '7601481386637475859',
+      container: document.getElementById('coze-chat-container') // 指定显示容器
+    },
+    componentProps: {
+      title: '王维AI书童', // 自定义聊天窗口标题
+    },
+    auth: {
+      type: 'token',
+      token: 'pat_zTzLFqJJoJLh08Vm6FgE4bNG4SXcGNjqWlGcbXAgzFnFpV9pEgbGTERf1VRoNQ0p',
+      onRefreshToken: function () {
+        return 'pat_zTzLFqJJoJLh08Vm6FgE4bNG4SXcGNjqWlGcbXAgzFnFpV9pEgbGTERf1VRoNQ0p';
+      }
+    }
+  });
+</script>
+</body>
+</html>
